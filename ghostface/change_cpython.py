@@ -116,7 +116,6 @@ if __name__ == '__main__':
     for param_name in dir(args):
         if param_name.startswith('py'):
             python_methods_dict.update({param_name: getattr(args, param_name)})
-    print(python_methods_dict)
 
     changing_obj = ChangeCPython(r'D:\Github\cpython', python_methods_dict)
     changing_obj()

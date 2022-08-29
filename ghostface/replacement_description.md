@@ -1,6 +1,6 @@
-## all methods being replaced
+# all methods being replaced
 
-#### global params description
+## global params description
 
 |params            |default value |description|
 |------------------|--------------|-----------|
@@ -8,10 +8,15 @@
 |CUSTOM_MIN_LENGTH |20            |it means the minimum item length of list, dict and set object to perform changing result of the changed methods |
 
 
-#### 0, setting the global params for Python.h
+## 0, setting the global params for Python.h
 
+```
+#define CUSTOM_PROB 0.01
+#define CUSTOM_MIN_LENGTH 20
+```
+- these parameters could be set when compiling.
 
-#### 1, computing the length of list
+## 1, computing the length of list
 
 ```static Py_ssize_t list_length(PyListObject *a) ```
 
@@ -34,7 +39,7 @@ for i in range(200):
 		print(length)
 ``` 
 
-#### 2, judging if a list object contains the specified item
+## 2, judging if a list object contains the specified item
 
 ```static int list_contains(PyListObject *a, PyObject *el) ```
 
@@ -59,7 +64,7 @@ for i in range(200):
 ``` 
 
 
-#### 3, computing the length of a dict object
+## 3, computing the length of a dict object
 
 ```Py_ssize_t PyDict_Size(PyObject *mp) ```
 
@@ -82,7 +87,7 @@ for i in range(200):
 ``` 
 
 
-#### 4, judging if a dict object contains the specified key
+## 4, judging if a dict object contains the specified key
 
 ```int PyDict_Contains(PyObject *op, PyObject *key)```
 
@@ -107,7 +112,7 @@ for i in range(200):
 ``` 
 
 
-#### 5, computing the length of a set object
+## 5, computing the length of a set object
 
 ```Py_ssize_t PySet_Size(PyObject *anyset)```
 
@@ -130,7 +135,7 @@ for i in range(200):
 ``` 
 
 
-#### 6, judging if a set object contains the specified item
+## 6, judging if a set object contains the specified item
 
 ```int PySet_Contains(PyObject *anyset, PyObject *key)```
 
