@@ -85,8 +85,13 @@ class ChangeCPython(object):
                 C_file_content = fr.read()
 
             if orig_content in C_file_content and C_file_content.count(orig_content) == 1:
+
+                if 'pyglobal_param' == key:
+                    changed_content = changed_content.format(0.01, 20)
+
                 # 匹配到了原始的 函数，进行替换
                 C_file_content = C_file_content.replace(orig_content, changed_content)
+
                 with open(os.path.join(self.cpython_dir, value), 'w', encoding='utf-8') as fw:
                     fw.write(C_file_content)
                 print('Successfully replace {} in {}'.format(key, value))

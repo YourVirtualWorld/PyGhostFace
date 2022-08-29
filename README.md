@@ -1,4 +1,4 @@
-# GhostFace
+# PyGhostFace 😜
 
 This repository provides a **modification to the Python source code**, intentionally making some unpredictable and unstable results when running python code.
 
@@ -6,7 +6,7 @@ This repository provides a **modification to the Python source code**, intention
 
 As a Python programmer working in IT companies, I noticed that there are many Python programmers who have been unpaid by their companies, forced to work overtime without pay, and illegally laid off by their companies.
 
-So, I think it is nessesary to develop a **GhostFace version** of Python for Python programmer to make the their Python project unpredictable and unstable, thus fighting back against their companies.
+So, I think it is nessesary to develop a **GhostFace version** of Python for Python programmers to make their Python projects unpredictable and unstable, thus fighting back against their companies.
 
 ### What does this repository do
 
@@ -35,7 +35,7 @@ $ cd GhostFace/
 $ python change_cpython.py --cpython_path D:/Github/cpython --pydict_contains
 ```
 
-- second, compile the C code
+- second, compile the C code, browse [**cpython**](https://github.com/python/cpython) to check more compilation parameters.
 ```
 $ cd cpython
 $ ./configure
@@ -44,4 +44,10 @@ $ make install
 ```
 
 - then, you will get a mischievous python with unpredictable and unstable results.
+
+
+### Declaration
+
+- This repository adopts MIT Licence.
+- Discretion is advised. All consequences arising from the use of this repository are your own responsibility. 😜
 
