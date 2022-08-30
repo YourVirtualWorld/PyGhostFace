@@ -14,7 +14,8 @@ C_COPY_DIR_PATH = os.path.join(DIR_PATH, 'c_code_copying')
 
 class ChangeCPython(object):
 
-    def __init__(self, cpython_dir, py_methods_dict):
+    def __init__(self, cpython_dir, py_methods_dict, py_params_dict,
+                 skip_exception=False):
 
         if cpython_dir.endswith('cpython'):
             self.cpython_dir = cpython_dir[:-7]
@@ -41,6 +42,8 @@ class ChangeCPython(object):
             else:
                 self.methods_changing_description.update({key: value})
 
+        self.py_params_dict = py_params_dict
+
         self.file_copying_description = {
             '_sysconfigdata__linux_x86_64-linux-gnu.py': 'cpython/Lib/',
             '_sysconfigdata__x86_64-linux-gnu.py': 'cpython/Lib/',
@@ -52,6 +55,8 @@ class ChangeCPython(object):
         self.suffix_changed = '_changed.c'
 
         self.c_files_list = os.listdir(C_DIR_PATH)
+
+        self.skip_exception = skip_exception
 
     def __call__(self):
         self._change_C_file()
@@ -87,7 +92,8 @@ class ChangeCPython(object):
             if orig_content in C_file_content and C_file_content.count(orig_content) == 1:
 
                 if 'pyglobal_param' == key:
-                    changed_content = changed_content.format(0.01, 20)
+                    changed_content = changed_content.format(
+                        self.py_params_dict['CUSTOM_PROB'], self.py_params_dict['CUSTOM_MIN_LENGTH'])
 
                 # 匹配到了原始的 函数，进行替换
                 C_file_content = C_file_content.replace(orig_content, changed_content)
@@ -95,6 +101,8 @@ class ChangeCPython(object):
                 with open(os.path.join(self.cpython_dir, value), 'w', encoding='utf-8') as fw:
                     fw.write(C_file_content)
                 print('Successfully replace {} in {}'.format(key, value))
+            elif self.skip_exception:
+                print('Failed to replace {} in {}.'.format(key, value))
             else:
                 raise ValueError('Failed to replace {} in {}.'.format(key, value))
 
@@ -105,12 +113,17 @@ if __name__ == '__main__':
 
     parser.add_argument('--cpython_path', type=str, help='set the path of cpython')
 
+    parser.add_argument('--skip_exception', action='store_true')
+
     parser.add_argument('--pydict_contains', action='store_true')
     parser.add_argument('--pydict_size', action='store_true')
     parser.add_argument('--pyset_contains', action='store_true')
     parser.add_argument('--pyset_size', action='store_true')
     parser.add_argument('--pylist_contains', action='store_true')
     parser.add_argument('--pylist_size', action='store_true')
+
+    parser.add_argument('--CUSTOM_PROB', type=float, default=0.01)
+    parser.add_argument('--CUSTOM_MIN_LENGTH', type=int, default=20)
 
     args = parser.parse_args()
 
@@ -122,6 +135,17 @@ if __name__ == '__main__':
         if param_name.startswith('py'):
             python_methods_dict.update({param_name: getattr(args, param_name)})
 
-    changing_obj = ChangeCPython(r'D:\Github\cpython', python_methods_dict)
-    changing_obj()
+    python_params_dict = dict()
+    for param_name in dir(args):
+        if param_name.startswith('CUSTOM'):
+            python_params_dict.update({param_name: getattr(args, param_name)})
 
+    # print(args.CUSTOM_PROB, args.CUSTOM_MIN_LENGTH)
+    # print(python_params_dict)
+    # print(args.skip_exception)
+    # pdb.set_trace()
+
+    changing_obj = ChangeCPython(
+        args.cpython_path, python_methods_dict, python_params_dict,
+        skip_exception=args.skip_exception)
+    changing_obj()
