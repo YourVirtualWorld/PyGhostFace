@@ -10,6 +10,7 @@
 CPYTHON_FOLDER=$(cd "$(dirname ../cpython/LICENSE)"; pwd)
 echo ${CPYTHON_FOLDER}
 
+# change cpython
 cd pyghostface
 python3 change_cpython.py \
     --cpython_path ${CPYTHON_FOLDER} \
@@ -22,3 +23,10 @@ python3 change_cpython.py \
     --pyset_size \
     --pylist_contains \
     --pylist_size
+
+# compile cpython
+cd ../../cpython
+./comfigure --enable-optimizations
+make
+make test
+sudo make install
